@@ -11,8 +11,16 @@ namespace ProjetoArcos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string Data_Atual = DateTime.Today.ToString();
             if (!IsPostBack)
-            {
+            {       if (txtDataInicio.Text != Data_Atual)
+                {
+                    btnSalvar.Enabled = true;
+                }
+            else
+                {
+                    btnSalvar.Enabled = false;
+                }
                     carregarEntidade();
                     carregaTipoEvento();
             }
@@ -35,7 +43,9 @@ namespace ProjetoArcos
         {
             using (ARCOS_Entities enntity = new ARCOS_Entities())
             {
-                List<ENTIDADE> lista = enntity.ENTIDADE.ToList();
+                List<ENTIDADE> lista = enntity.ENTIDADE.
+                    Where(linha=>linha.ATIVA.Equals(true)).
+                    OrderBy(linha=>linha.NOME).ToList();
                 ddlEntidade.DataTextField = "NOME";
                 ddlEntidade.DataValueField = "ID";
                 ddlEntidade.DataSource = lista;
@@ -47,6 +57,10 @@ namespace ProjetoArcos
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             Response.Redirect("frmbuscaevento.aspx");
+        }
+
+        protected void btnSalvar_Click(object sender, EventArgs e)
+        {       
         }
     }
 }

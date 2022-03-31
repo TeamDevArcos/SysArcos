@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SysArcos</RootNamespace>
     <AssemblyName>SysArcos</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44301</IISExpressSSLPort>
@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,12 +61,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -99,9 +97,15 @@
     <Content Include="formularios\evento\frmbuscaevento.aspx" />
     <Content Include="formularios\fornecedor\frmbuscafornecedor.aspx" />
     <Content Include="formularios\fornecimento\fornecimento.aspx" />
+    <Content Include="formularios\parentesco_assistido\frmbuscaparentescoassistido.aspx" />
+    <Content Include="formularios\parentesco_assistido\frmparentescoassistido.aspx" />
     <Content Include="formularios\recurso\frmbuscarecurso.aspx" />
     <Content Include="formularios\recurso\frmrecurso.aspx" />
+    <Content Include="formularios\tipoassistencia\frmtipoassistencia.aspx" />
     <Content Include="formularios\Voluntariar\frmvoluntariar.aspx" />
+    <Content Include="GerarCaptcha.aspx" />
+    <Content Include="imagens\arcos_alta.jpeg" />
+    <Content Include="imagens\fundo.jpg" />
     <Content Include="ModelArcos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelArcos.edmx</DependentUpon>
@@ -151,6 +155,10 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="libman.json" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings1.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings2.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -169,6 +177,9 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile1.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -339,6 +350,20 @@
     <Compile Include="formularios\fornecimento\fornecimento.aspx.designer.cs">
       <DependentUpon>fornecimento.aspx</DependentUpon>
     </Compile>
+    <Compile Include="formularios\parentesco_assistido\frmbuscaparentescoassistido.aspx.cs">
+      <DependentUpon>frmbuscaparentescoassistido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="formularios\parentesco_assistido\frmbuscaparentescoassistido.aspx.designer.cs">
+      <DependentUpon>frmbuscaparentescoassistido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="formularios\parentesco_assistido\frmparentescoassistido.aspx.cs">
+      <DependentUpon>frmparentescoassistido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="formularios\parentesco_assistido\frmparentescoassistido.aspx.designer.cs">
+      <DependentUpon>frmparentescoassistido.aspx</DependentUpon>
+    </Compile>
     <Compile Include="formularios\recurso\frmbuscarecurso.aspx.cs">
       <DependentUpon>frmbuscarecurso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -352,6 +377,13 @@
     </Compile>
     <Compile Include="formularios\recurso\frmrecurso.aspx.designer.cs">
       <DependentUpon>frmrecurso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="formularios\tipoassistencia\frmtipoassistencia.aspx.cs">
+      <DependentUpon>frmtipoassistencia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="formularios\tipoassistencia\frmtipoassistencia.aspx.designer.cs">
+      <DependentUpon>frmtipoassistencia.aspx</DependentUpon>
     </Compile>
     <Compile Include="formularios\Voluntariar\frmvoluntariar.aspx.cs">
       <DependentUpon>frmvoluntariar.aspx</DependentUpon>
@@ -367,6 +399,16 @@
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
     <Compile Include="FORNECIMENTO_ITENS.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GerarCaptcha.aspx.cs">
+      <DependentUpon>GerarCaptcha.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GerarCaptcha.aspx.designer.cs">
+      <DependentUpon>GerarCaptcha.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GRAU_DEPENDENCIA.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
     <Compile Include="GRUPO_PERMISSAO.cs">
@@ -604,6 +646,24 @@
     <Compile Include="RECURSO.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
+    <Compile Include="SISTEMA_ENTIDADE.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SISTEMA_GRUPO_ENTIDADE.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SISTEMA_ITEM_ENTIDADE.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SISTEMA_ITEM_ENTIDADE_CADASTRO.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SISTEMA_ITEM_ENTIDADE_CONSULTA.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPO_ASSISTENCIA.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
     <Compile Include="TIPO_EVENTO.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
@@ -613,6 +673,7 @@
     <Compile Include="USUARIO.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
+    <Compile Include="utils\Permissoes.cs" />
     <Compile Include="VOLUNTARIADO.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
@@ -652,6 +713,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

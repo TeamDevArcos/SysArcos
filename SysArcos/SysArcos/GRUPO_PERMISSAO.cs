@@ -18,30 +18,15 @@ namespace SysArcos
         public GRUPO_PERMISSAO()
         {
             this.USUARIO = new HashSet<USUARIO>();
+            this.SISTEMA_ITEM_ENTIDADE = new HashSet<SISTEMA_ITEM_ENTIDADE>();
         }
     
         public int ID { get; set; }
         public string DESCRICAO { get; set; }
-        public bool PERM_ENTIDADE { get; set; }
-        public bool PERM_VOLUNTARIOS { get; set; }
-        public bool PERM_VOLUNTARIAR { get; set; }
-        public bool PERM_VOLUNTARIADO { get; set; }
-        public bool PERM_USUARIOS { get; set; }
-        public bool PERM_GRUPOPERMISSAO { get; set; }
-        public bool PERM_EVENTO { get; set; }
-        public bool PERM_TIPOEVENTO { get; set; }
-        public bool PERM_RECURSO { get; set; }
-        public bool PERM_TIPORECURSO { get; set; }
-        public bool PERM_FORNECEDOR { get; set; }
-        public bool PERM_FORNECIMENTO { get; set; }
-        public bool PERM_PRODUTO { get; set; }
-        public bool PERM_TIPOPRODUTO { get; set; }
-        public bool PERM_DOACAO { get; set; }
-        public bool PERM_DOADOR { get; set; }
-        public bool PERM_ASSISTENCIA { get; set; }
-        public bool PERM_ASSISTIDO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SISTEMA_ITEM_ENTIDADE> SISTEMA_ITEM_ENTIDADE { get; set; }
     }
 }
