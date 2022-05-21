@@ -51,5 +51,6 @@ namespace SysArcos
         public virtual DbSet<SISTEMA_ITEM_ENTIDADE> SISTEMA_ITEM_ENTIDADE { get; set; }
         public virtual DbSet<TIPO_ASSISTENCIA> TIPO_ASSISTENCIA { get; set; }
         public virtual DbSet<ASSISTENCIA> ASSISTENCIA { get; set; }
+        public virtual DbSet<LOG> LOG { get; set; }
     }
 }

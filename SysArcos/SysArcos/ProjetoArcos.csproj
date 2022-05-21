@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SysArcos</RootNamespace>
     <AssemblyName>SysArcos</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44301</IISExpressSSLPort>
@@ -97,6 +97,7 @@
     <Content Include="formularios\evento\frmbuscaevento.aspx" />
     <Content Include="formularios\fornecedor\frmbuscafornecedor.aspx" />
     <Content Include="formularios\fornecimento\fornecimento.aspx" />
+    <Content Include="formularios\logs\frmlogs.aspx" />
     <Content Include="formularios\parentesco_assistido\frmbuscaparentescoassistido.aspx" />
     <Content Include="formularios\parentesco_assistido\frmparentescoassistido.aspx" />
     <Content Include="formularios\recurso\frmbuscarecurso.aspx" />
@@ -104,6 +105,7 @@
     <Content Include="formularios\tipoassistencia\frmtipoassistencia.aspx" />
     <Content Include="formularios\Voluntariar\frmvoluntariar.aspx" />
     <Content Include="GerarCaptcha.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="imagens\arcos_alta.jpeg" />
     <Content Include="imagens\fundo.jpg" />
     <Content Include="ModelArcos.Context.tt">
@@ -350,6 +352,13 @@
     <Compile Include="formularios\fornecimento\fornecimento.aspx.designer.cs">
       <DependentUpon>fornecimento.aspx</DependentUpon>
     </Compile>
+    <Compile Include="formularios\logs\frmlogs.aspx.cs">
+      <DependentUpon>frmlogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="formularios\logs\frmlogs.aspx.designer.cs">
+      <DependentUpon>frmlogs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="formularios\parentesco_assistido\frmbuscaparentescoassistido.aspx.cs">
       <DependentUpon>frmbuscaparentescoassistido.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -408,10 +417,16 @@
     <Compile Include="GerarCaptcha.aspx.designer.cs">
       <DependentUpon>GerarCaptcha.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="GRAU_DEPENDENCIA.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
     <Compile Include="GRUPO_PERMISSAO.cs">
+      <DependentUpon>ModelArcos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG.cs">
       <DependentUpon>ModelArcos.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelArcos.Context.cs">

@@ -11,12 +11,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DATA_INICIAL" Type="date" Nullable="false" />
-          <Property Name="DATA_FINAL" Type="date" Nullable="false" />
+          <Property Name="DATA_FINAL" Type="date" />
           <Property Name="OBSERVACOES" Type="text" />
           <Property Name="ID_ASSISTIDO" Type="int" Nullable="false" />
           <Property Name="ID_ENTIDADE" Type="int" Nullable="false" />
-          <Property Name="ID_TIPO_ASSISTENCIA" Type="int" Nullable="false" />
           <Property Name="DATA_HORA_CRIACAO_REGISTRO" Type="datetime" Nullable="false" />
+          <Property Name="ID_TIPO_ASSISTENCIA" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ASSISTIDO">
           <Key>
@@ -186,6 +186,17 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCRICAO" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA" Type="date" Nullable="false" />
+          <Property Name="METODO" Type="text" Nullable="false" />
+          <Property Name="LOGIN_USUARIO" Type="varchar" MaxLength="30" />
+          <Property Name="ID_SISTEMA_ENTIDADE" Type="int" Nullable="false" />
+          <Property Name="DESCRICAO" Type="text" />
+        </EntityType>
         <EntityType Name="PRODUTO">
           <Key>
             <PropertyRef Name="ID" />
@@ -284,7 +295,7 @@
             <PropertyRef Name="LOGIN" />
           </Key>
           <Property Name="LOGIN" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="SENHA" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="SENHA" Type="varchar" MaxLength="200" />
           <Property Name="NOME" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CPF" Type="varchar" MaxLength="14" />
           <Property Name="EMAIL" Type="varchar" MaxLength="50" Nullable="false" />
@@ -337,7 +348,19 @@
           <Property Name="ATIVO" Type="bit" Nullable="false" />
           <Property Name="DATA_HORA_CRIACAO_REGISTRO" Type="datetime" Nullable="false" />
         </EntityType>
-        <Association Name="FK__ASSISTIDO__ID_GR__282DF8C2">
+        <Association Name="FK__ASSISTENC__ID_TI__73BA3083">
+          <End Role="TIPO_ASSISTENCIA" Type="Self.TIPO_ASSISTENCIA" Multiplicity="1" />
+          <End Role="ASSISTENCIA" Type="Self.ASSISTENCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_ASSISTENCIA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ASSISTENCIA">
+              <PropertyRef Name="ID_TIPO_ASSISTENCIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ASSISTIDO__ID_GR__76969D2E">
           <End Role="GRAU_DEPENDENCIA" Type="Self.GRAU_DEPENDENCIA" Multiplicity="1" />
           <End Role="ASSISTIDO" Type="Self.ASSISTIDO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -370,18 +393,6 @@
             </Principal>
             <Dependent Role="ASSISTENCIA">
               <PropertyRef Name="ID_ENTIDADE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ASSISTENCIA_TIPO_ASSISTENCIA">
-          <End Role="TIPO_ASSISTENCIA" Type="Self.TIPO_ASSISTENCIA" Multiplicity="1" />
-          <End Role="ASSISTENCIA" Type="Self.ASSISTENCIA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPO_ASSISTENCIA">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ASSISTENCIA">
-              <PropertyRef Name="ID_TIPO_ASSISTENCIA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -593,6 +604,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ID_ENTIDADE">
+          <End Role="SISTEMA_ENTIDADE" Type="Self.SISTEMA_ENTIDADE" Multiplicity="1" />
+          <End Role="LOG" Type="Self.LOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SISTEMA_ENTIDADE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LOG">
+              <PropertyRef Name="ID_SISTEMA_ENTIDADE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOGIN_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="LOG" Type="Self.LOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="LOGIN" />
+            </Principal>
+            <Dependent Role="LOG">
+              <PropertyRef Name="LOGIN_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PRODUTO_CATEGORIA">
           <End Role="CATEGORIA_PRODUTO" Type="Self.CATEGORIA_PRODUTO" Multiplicity="1" />
           <End Role="PRODUTO" Type="Self.PRODUTO" Multiplicity="*" />
@@ -650,18 +685,6 @@
             </Principal>
             <Dependent Role="SISTEMA_ITEM_ENTIDADE">
               <PropertyRef Name="ID_GRUPO_PERMISSAO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SISTEMAITEMENTIDADE_SISTEMAENTIDADE">
-          <End Role="SISTEMA_ENTIDADE" Type="Self.SISTEMA_ENTIDADE" Multiplicity="1" />
-          <End Role="SISTEMA_ITEM_ENTIDADE" Type="Self.SISTEMA_ITEM_ENTIDADE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SISTEMA_ENTIDADE">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="SISTEMA_ITEM_ENTIDADE">
-              <PropertyRef Name="ID_SISTEMA_ENTIDADE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -740,6 +763,7 @@
           <EntitySet Name="FORNECIMENTO_ITENS" EntityType="Self.FORNECIMENTO_ITENS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRAU_DEPENDENCIA" EntityType="Self.GRAU_DEPENDENCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO_PERMISSAO" EntityType="Self.GRUPO_PERMISSAO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUTO" EntityType="Self.PRODUTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RECURSO" EntityType="Self.RECURSO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SISTEMA_ENTIDADE" EntityType="Self.SISTEMA_ENTIDADE" Schema="dbo" store:Type="Tables" />
@@ -754,7 +778,11 @@
           <EntitySet Name="VOLUNTARIADO" EntityType="Self.VOLUNTARIADO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VOLUNTARIAR" EntityType="Self.VOLUNTARIAR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VOLUNTARIO" EntityType="Self.VOLUNTARIO" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__ASSISTIDO__ID_GR__282DF8C2" Association="Self.FK__ASSISTIDO__ID_GR__282DF8C2">
+          <AssociationSet Name="FK__ASSISTENC__ID_TI__73BA3083" Association="Self.FK__ASSISTENC__ID_TI__73BA3083">
+            <End Role="TIPO_ASSISTENCIA" EntitySet="TIPO_ASSISTENCIA" />
+            <End Role="ASSISTENCIA" EntitySet="ASSISTENCIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ASSISTIDO__ID_GR__76969D2E" Association="Self.FK__ASSISTIDO__ID_GR__76969D2E">
             <End Role="GRAU_DEPENDENCIA" EntitySet="GRAU_DEPENDENCIA" />
             <End Role="ASSISTIDO" EntitySet="ASSISTIDO" />
           </AssociationSet>
@@ -764,10 +792,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_ASSISTENCIA_ENTIDADE" Association="Self.FK_ASSISTENCIA_ENTIDADE">
             <End Role="ENTIDADE" EntitySet="ENTIDADE" />
-            <End Role="ASSISTENCIA" EntitySet="ASSISTENCIA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ASSISTENCIA_TIPO_ASSISTENCIA" Association="Self.FK_ASSISTENCIA_TIPO_ASSISTENCIA">
-            <End Role="TIPO_ASSISTENCIA" EntitySet="TIPO_ASSISTENCIA" />
             <End Role="ASSISTENCIA" EntitySet="ASSISTENCIA" />
           </AssociationSet>
           <AssociationSet Name="FK_ASSISTIDO_ENTIDADE" Association="Self.FK_ASSISTIDO_ENTIDADE">
@@ -838,6 +862,14 @@
             <End Role="PRODUTO" EntitySet="PRODUTO" />
             <End Role="FORNECIMENTO_ITENS" EntitySet="FORNECIMENTO_ITENS" />
           </AssociationSet>
+          <AssociationSet Name="FK_ID_ENTIDADE" Association="Self.FK_ID_ENTIDADE">
+            <End Role="SISTEMA_ENTIDADE" EntitySet="SISTEMA_ENTIDADE" />
+            <End Role="LOG" EntitySet="LOG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOGIN_USUARIO" Association="Self.FK_LOGIN_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="LOG" EntitySet="LOG" />
+          </AssociationSet>
           <AssociationSet Name="FK_PRODUTO_CATEGORIA" Association="Self.FK_PRODUTO_CATEGORIA">
             <End Role="CATEGORIA_PRODUTO" EntitySet="CATEGORIA_PRODUTO" />
             <End Role="PRODUTO" EntitySet="PRODUTO" />
@@ -856,10 +888,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_SISTEMAITEMENTIDADE_GRUPOPERMISSAO" Association="Self.FK_SISTEMAITEMENTIDADE_GRUPOPERMISSAO">
             <End Role="GRUPO_PERMISSAO" EntitySet="GRUPO_PERMISSAO" />
-            <End Role="SISTEMA_ITEM_ENTIDADE" EntitySet="SISTEMA_ITEM_ENTIDADE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SISTEMAITEMENTIDADE_SISTEMAENTIDADE" Association="Self.FK_SISTEMAITEMENTIDADE_SISTEMAENTIDADE">
-            <End Role="SISTEMA_ENTIDADE" EntitySet="SISTEMA_ENTIDADE" />
             <End Role="SISTEMA_ITEM_ENTIDADE" EntitySet="SISTEMA_ITEM_ENTIDADE" />
           </AssociationSet>
           <AssociationSet Name="FK_USUARIO_GRUPOPERMISSAO" Association="Self.FK_USUARIO_GRUPOPERMISSAO">
@@ -1033,6 +1061,15 @@
           <AssociationSet Name="FK_ASSISTENCIA_TIPO_ASSISTENCIA" Association="ARCOS_V2Model.FK_ASSISTENCIA_TIPO_ASSISTENCIA">
             <End Role="TIPO_ASSISTENCIA" EntitySet="TIPO_ASSISTENCIA" />
             <End Role="ASSISTENCIA" EntitySet="ASSISTENCIA" />
+          </AssociationSet>
+          <EntitySet Name="LOG" EntityType="ARCOS_V2Model.LOG" />
+          <AssociationSet Name="FK_ID_ENTIDADE" Association="ARCOS_V2Model.FK_ID_ENTIDADE">
+            <End Role="SISTEMA_ENTIDADE" EntitySet="SISTEMA_ENTIDADE" />
+            <End Role="LOG" EntitySet="LOG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOGIN_USUARIO" Association="ARCOS_V2Model.FK_LOGIN_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="LOG" EntitySet="LOG" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ASSISTIDO">
@@ -1299,7 +1336,7 @@
             <PropertyRef Name="LOGIN" />
           </Key>
           <Property Name="LOGIN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="SENHA" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="SENHA" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CPF" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -1310,6 +1347,7 @@
           <Property Name="ADM" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ENTIDADE" Relationship="ARCOS_V2Model.FK_ENTIDADE_USUARIO" FromRole="USUARIO" ToRole="ENTIDADE" />
           <NavigationProperty Name="GRUPO_PERMISSAO" Relationship="ARCOS_V2Model.FK_USUARIO_GRUPOPERMISSAO" FromRole="USUARIO" ToRole="GRUPO_PERMISSAO" />
+          <NavigationProperty Name="LOG" Relationship="ARCOS_V2Model.FK_LOGIN_USUARIO" FromRole="USUARIO" ToRole="LOG" />
         </EntityType>
         <EntityType Name="VOLUNTARIADO">
           <Key>
@@ -1660,6 +1698,7 @@
           <NavigationProperty Name="SISTEMA_ITEM_ENTIDADE" Relationship="ARCOS_V2Model.FK_SISTEMAITEMENTIDADE_SISTEMAENTIDADE" FromRole="SISTEMA_ENTIDADE" ToRole="SISTEMA_ITEM_ENTIDADE" />
           <Property Name="TIPO_ENTIDADE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="COD_VIEW" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="LOG" Relationship="ARCOS_V2Model.FK_ID_ENTIDADE" FromRole="SISTEMA_ENTIDADE" ToRole="LOG" />
         </EntityType>
         <Association Name="FK_SISTEMA_ENTIDADE_SISTEMA_GRUPO_ENTIDADE">
           <End Type="ARCOS_V2Model.SISTEMA_GRUPO_ENTIDADE" Role="SISTEMA_GRUPO_ENTIDADE" Multiplicity="1" />
@@ -1729,7 +1768,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATA_INICIAL" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DATA_FINAL" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATA_FINAL" Type="DateTime" Precision="0" />
           <Property Name="OBSERVACOES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DATA_HORA_CRIACAO_REGISTRO" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ASSISTIDO" Relationship="ARCOS_V2Model.FK_ASSISTENCIA_ASSISTIDO" FromRole="ASSISTENCIA" ToRole="ASSISTIDO" />
@@ -1747,6 +1786,25 @@
         <Association Name="FK_ASSISTENCIA_TIPO_ASSISTENCIA">
           <End Type="ARCOS_V2Model.TIPO_ASSISTENCIA" Role="TIPO_ASSISTENCIA" Multiplicity="1" />
           <End Type="ARCOS_V2Model.ASSISTENCIA" Role="ASSISTENCIA" Multiplicity="*" />
+        </Association>
+        <EntityType Name="LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="METODO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRICAO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SISTEMA_ENTIDADE" Relationship="ARCOS_V2Model.FK_ID_ENTIDADE" FromRole="LOG" ToRole="SISTEMA_ENTIDADE" />
+          <NavigationProperty Name="USUARIO" Relationship="ARCOS_V2Model.FK_LOGIN_USUARIO" FromRole="LOG" ToRole="USUARIO" />
+        </EntityType>
+        <Association Name="FK_ID_ENTIDADE">
+          <End Type="ARCOS_V2Model.SISTEMA_ENTIDADE" Role="SISTEMA_ENTIDADE" Multiplicity="1" />
+          <End Type="ARCOS_V2Model.LOG" Role="LOG" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_LOGIN_USUARIO">
+          <End Type="ARCOS_V2Model.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="ARCOS_V2Model.LOG" Role="LOG" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -2126,6 +2184,33 @@
             <EndProperty Name="TIPO_ASSISTENCIA">
               <ScalarProperty Name="ID" ColumnName="ID_TIPO_ASSISTENCIA" />
             </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="LOG">
+            <EntityTypeMapping TypeName="ARCOS_V2Model.LOG">
+              <MappingFragment StoreEntitySet="LOG">
+                <ScalarProperty Name="DESCRICAO" ColumnName="DESCRICAO" />
+                <ScalarProperty Name="METODO" ColumnName="METODO" />
+                <ScalarProperty Name="DATA" ColumnName="DATA" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_ID_ENTIDADE" TypeName="ARCOS_V2Model.FK_ID_ENTIDADE" StoreEntitySet="LOG">
+            <EndProperty Name="LOG">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="SISTEMA_ENTIDADE">
+              <ScalarProperty Name="ID" ColumnName="ID_SISTEMA_ENTIDADE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_LOGIN_USUARIO" TypeName="ARCOS_V2Model.FK_LOGIN_USUARIO" StoreEntitySet="LOG">
+            <EndProperty Name="LOG">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="USUARIO">
+              <ScalarProperty Name="LOGIN" ColumnName="LOGIN_USUARIO" />
+            </EndProperty>
+            <Condition ColumnName="LOGIN_USUARIO" IsNull="false" />
           </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>

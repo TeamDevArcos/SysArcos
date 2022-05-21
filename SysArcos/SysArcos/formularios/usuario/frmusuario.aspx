@@ -1,6 +1,78 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="frmusuario.aspx.cs" Inherits="ProjetoArcos.formusuario" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script>
+        window.onload = function () {      
+            if (document.getElementById("ContentPlaceHolder1_txt_senhaUsuario").value != "") {
+                validar(document.getElementById("ContentPlaceHolder1_txt_senhaUsuario"));
+            }
+        }
+
+
+        function validar(element){
+            var str = element.value;
+            var valida = true;
+           
+            var regexpMin = new RegExp(/[a-z]/);
+            var regexpMai = new RegExp(/[A-Z]/);
+            var regexpNum = new RegExp(/[0-9]/);
+            var regexpCar = new RegExp(/[*|!]/);
+
+            var min = regexpMin.exec(str);
+            var mai = regexpMai.exec(str);
+            var num = regexpNum.exec(str);
+            var car = regexpCar.exec(str);
+
+            document.getElementById("min").classList.remove("text-danger", "text-success");
+            document.getElementById("mai").classList.remove("text-danger", "text-success");
+            document.getElementById("num").classList.remove("text-danger", "text-success");
+            document.getElementById("car").classList.remove("text-danger", "text-success");
+            document.getElementById("tamanho").classList.remove("text-danger", "text-success");
+           
+            if(min == null){
+                document.getElementById("min").classList.add("text-danger");
+                valida = false;
+            }else{
+                document.getElementById("min").classList.add("text-success");
+            }
+           
+            if(mai == null){
+                document.getElementById("mai").classList.add("text-danger");
+                valida = false;
+            }else{
+                document.getElementById("mai").classList.add("text-success");
+            }
+           
+            if(num == null){
+                document.getElementById("num").classList.add("text-danger");
+                valida = false;
+            }else{
+                document.getElementById("num").classList.add("text-success");
+            }
+
+            if(car == null){
+                document.getElementById("car").classList.add("text-danger");
+                valida = false;
+            }else{
+                document.getElementById("car").classList.add("text-success");
+            }
+
+            if(str.length < 8){
+                document.getElementById("tamanho").classList.add("text-danger");
+                valida = false;
+            }else{
+                document.getElementById("tamanho").classList.add("text-success");
+            }
+
+            document.getElementById("politicaSenha").classList.remove("alert-danger", "alert-success");
+
+            if (valida) {
+                document.getElementById("politicaSenha").classList.add("alert-success");
+            }
+            else {
+                document.getElementById("politicaSenha").classList.add("alert-danger");
+            }
+        }
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="row">
@@ -23,6 +95,15 @@
         </div>
     </div>
 
+    <div id="politicaSenha"class="alert font-weight-bold d-flex flex-column">
+            <span class="text-dark">A senha deverá conter:</span>
+            <span id="min">No mínimo 1 letra minúscula</span>
+            <span id="mai">No mínimo 1 letra maiúscula</span>
+            <span id="num">No mínimo 1 número</span>
+            <span id="car">No mínimo 1 caracter especial</span>
+            <span id="tamanho">8 caracteres</span>
+    </div>
+
     <div class="row">
         <div class="col-12 col-lg-4 row_fields">
             <asp:Label ID="lbl_user" runat="server" Text="Usuário:"></asp:Label>
@@ -33,7 +114,7 @@
         <div class="col-12 col-lg-4 row_fields">
             <asp:Label ID="lbl_senha" runat="server" Text="Senha:"></asp:Label>
             &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txt_senhaUsuario" ErrorMessage="Campo Senha Vazio" Font-Size="Medium" ForeColor="Red" ValidationGroup="form">*</asp:RequiredFieldValidator>
-&nbsp;<asp:TextBox ID="txt_senhaUsuario" type="password" class="form-control" runat="server" MaxLength="8" Placeholder="max: 8 dig" Width="100%" Height="40px" ValidationGroup="form"></asp:TextBox>
+&nbsp;<asp:TextBox ID="txt_senhaUsuario" type="password" class="form-control" runat="server" MaxLength="8" Placeholder="max: 8 dig" Width="100%" Height="40px" ValidationGroup="form" onKeyUp="javascript:validar(this)"></asp:TextBox>
         </div>
 
         <div class="col-12 col-lg-4 row_fields">

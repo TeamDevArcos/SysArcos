@@ -18,6 +18,7 @@ namespace SysArcos
         public SISTEMA_ENTIDADE()
         {
             this.SISTEMA_ITEM_ENTIDADE = new HashSet<SISTEMA_ITEM_ENTIDADE>();
+            this.LOG = new HashSet<LOG>();
         }
     
         public int ID { get; set; }
@@ -30,5 +31,7 @@ namespace SysArcos
         public virtual SISTEMA_GRUPO_ENTIDADE SISTEMA_GRUPO_ENTIDADE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SISTEMA_ITEM_ENTIDADE> SISTEMA_ITEM_ENTIDADE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LOG> LOG { get; set; }
     }
 }

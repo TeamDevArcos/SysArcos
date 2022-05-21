@@ -18,6 +18,7 @@ namespace SysArcos
         public USUARIO()
         {
             this.ENTIDADE = new HashSet<ENTIDADE>();
+            this.LOG = new HashSet<LOG>();
         }
     
         public string LOGIN { get; set; }
@@ -34,5 +35,7 @@ namespace SysArcos
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ENTIDADE> ENTIDADE { get; set; }
         public virtual GRUPO_PERMISSAO GRUPO_PERMISSAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LOG> LOG { get; set; }
     }
 }

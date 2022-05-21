@@ -66,6 +66,9 @@
         <AssociationConnector Association="ARCOS_V2Model.FK_ASSISTENCIA_ASSISTIDO" />
         <AssociationConnector Association="ARCOS_V2Model.FK_ASSISTENCIA_ENTIDADE" />
         <AssociationConnector Association="ARCOS_V2Model.FK_ASSISTENCIA_TIPO_ASSISTENCIA" />
+        <EntityTypeShape EntityType="ARCOS_V2Model.LOG" Width="1.5" PointX="5.25" PointY="12.375" />
+        <AssociationConnector Association="ARCOS_V2Model.FK_ID_ENTIDADE" />
+        <AssociationConnector Association="ARCOS_V2Model.FK_LOGIN_USUARIO" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

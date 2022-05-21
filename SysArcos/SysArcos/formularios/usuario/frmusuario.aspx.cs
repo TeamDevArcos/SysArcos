@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -46,6 +47,9 @@ namespace ProjetoArcos
                  txt_cpf.Text == "" || txt_email.Text == "" || ddlPermissao.Text == "")
             {
                 Response.Write("<script>alert('Há campos obrigatorios não preenchidos!');</script>");
+            }
+            else if(!SenhaValida()){
+                Response.Write("<script>alert('A senha deve conter no mínimo 1 letra minúscula, 1 letra maiúscula, 1 número, 1 caracter especial e 8 caracteres no total!');</script>");
             }
             else
             {
@@ -136,5 +140,24 @@ namespace ProjetoArcos
                 ddlPermissao.Items.Insert(0, "");
             }
         }
+
+        private bool SenhaValida()
+        {
+            Regex regexMin = new Regex("([a-z])");
+            Regex regexMai = new Regex("([A-Z])");
+            Regex regexNum = new Regex("([0-9])");
+            Regex regexCar = new Regex("([*|!])");
+
+            if (!regexCar.IsMatch(this.txt_senhaUsuario.Text)
+                || (!regexMin.IsMatch(this.txt_senhaUsuario.Text))
+                || (!regexMai.IsMatch(this.txt_senhaUsuario.Text))
+                || (!regexNum.IsMatch(this.txt_senhaUsuario.Text))
+                || (this.txt_senhaUsuario.Text.Length < 8))
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }
